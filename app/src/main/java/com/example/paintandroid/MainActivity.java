@@ -20,6 +20,8 @@ public class MainActivity extends Activity {
     private PaintView paintView;
     private FrameLayout frameLayout;
 
+    private int anchoPx = 300;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +41,15 @@ public class MainActivity extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         paletadeColores.setNumColumns(GridView.AUTO_FIT);
-        paletadeColores.setColumnWidth(GridView.AUTO_FIT);
-        paletadeColores.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+        //paletadeColores;
+        paletadeColores.setColumnWidth(anchoPx); //(GridView.STRETCH_COLUMN_WIDTH); para automatico
+        paletadeColores.setStretchMode(GridView.STRETCH_COLUMN_WIDTH); // (GridView.STRETCH_COLUMN_WIDTH)
         paletadeColores.setGravity(Gravity.CENTER);
-        paletadeColores.setHorizontalSpacing(10);
+        paletadeColores.setHorizontalSpacing(0);
         paletadeColores.setVerticalSpacing(10);
         paletadeColores.setPadding(10, 10, 10, 10);
 
-        final String[] colors = new String[]{"Black", "Red", "Green", "Blue", "Yellow", "Purple", "Cyan"};
+        final String[] colors = new String[]{"Negro", "Rojo", "Verde", "Azul", "Amarillo", "Magenta", "Cian"};
         final int[] colorValues = new int[]{Color.BLACK, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA, Color.CYAN};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, colors) {

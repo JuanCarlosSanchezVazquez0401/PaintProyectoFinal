@@ -18,10 +18,12 @@ public class PaintView extends View {
     private Map<Integer, List<Path>> pathsByColor;
     private Paint pincel;
     private Path path;
+    private Map<Path, Integer> pathColors; // Mantener el color de cada trazo en un mapa separado
 
     public PaintView(Context context) {
         super(context);
         pathsByColor = new HashMap<>();
+        pathColors = new HashMap<>(); // Inicializar el mapa de colores de trazo
         pincel = new Paint();
         pincel.setColor(Color.BLACK);
         pincel.setStyle(Paint.Style.STROKE);
@@ -49,6 +51,7 @@ public class PaintView extends View {
                 path = new Path();
                 path.moveTo(xPos, yPos);
                 addPathForColor(pincel.getColor(), path);
+                pathColors.put(path, pincel.getColor()); // Guardar el color actual del trazo
                 break;
             case MotionEvent.ACTION_MOVE:
                 path.lineTo(xPos, yPos);
