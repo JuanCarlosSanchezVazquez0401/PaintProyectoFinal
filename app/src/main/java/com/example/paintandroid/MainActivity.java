@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.widget.TextView;
+import android.widget.Button;
+
 
 public class MainActivity extends Activity {
 
@@ -21,6 +23,7 @@ public class MainActivity extends Activity {
     private FrameLayout frameLayout;
 
     private int anchoPx = 300;
+    private boolean borradorSeleccionado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,32 @@ public class MainActivity extends Activity {
         setContentView(frameLayout);
 
         setupColorPalette();
+
+        Button btnBorrar = new Button(this);
+        btnBorrar.setText("Borrar");
+
+        // Ajustar el tamaño del botón
+        FrameLayout.LayoutParams buttonParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        buttonParams.gravity = Gravity.BOTTOM | Gravity.START; // Ajustar la posición del botón
+        buttonParams.setMargins(16, 16, 16, 16); // Establecer márgenes
+        btnBorrar.setLayoutParams(buttonParams);
+
+        btnBorrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toggle the eraser mode
+                borradorSeleccionado = !borradorSeleccionado;
+                if (borradorSeleccionado) {
+                    paintView.setBorrador(true);
+                } else {
+                    paintView.setBorrador(false);
+                }
+            }
+        });
+        frameLayout.addView(btnBorrar);
     }
 
     private void setupColorPalette() {

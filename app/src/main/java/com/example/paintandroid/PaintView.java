@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import android.widget.Button;
+import android.graphics.RectF;
+
 
 public class PaintView extends View {
 
@@ -19,7 +22,7 @@ public class PaintView extends View {
     private Paint pincel;
     private Path path;
     private Map<Path, Integer> pathColors; // Mantener el color de cada trazo en un mapa separado
-
+    private boolean borrador = false;
     public PaintView(Context context) {
         super(context);
         pathsByColor = new HashMap<>();
@@ -28,6 +31,10 @@ public class PaintView extends View {
         pincel.setColor(Color.BLACK);
         pincel.setStyle(Paint.Style.STROKE);
         pincel.setStrokeWidth(5);
+    }
+
+    public void setBorrador(boolean borrador) {
+        this.borrador = borrador;
     }
 
     @Override
@@ -54,7 +61,22 @@ public class PaintView extends View {
                 pathColors.put(path, pincel.getColor()); // Guardar el color actual del trazo
                 break;
             case MotionEvent.ACTION_MOVE:
-                path.lineTo(xPos, yPos);
+                if (!borrador) {
+                    path.lineTo(xPos, yPos);
+                } else {
+                    // Borrar trazos que están dentro del área de contacto del dedo del usuario
+                    for (Map.Entry<Integer, List<Path>> entry : pathsByColor.entrySet()) {
+                        for (Path path : entry.getValue()) {
+                            RectF bounds = new RectF();
+                            path.computeBounds(bounds, true);
+                            if (bounds.contains(xPos, yPos)) {
+                                // Si el trazo está dentro del área de contacto, lo eliminamos
+                                pathsByColor.get(entry.getKey()).remove(path);
+                                break;
+                            }
+                        }
+                    }
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 // No hacer nada
@@ -78,4 +100,6 @@ public class PaintView extends View {
         }
         pathsByColor.get(color).add(path);
     }
+
+
 }
